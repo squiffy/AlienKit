@@ -1,0 +1,6 @@
+framework module AlienKit {
+  umbrella header "AlienKit-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,20 @@
+PODS:
+  - AlienKit (0.1.0)
+  - Nimble (3.0.0)
+  - Quick (0.8.0)
+
+DEPENDENCIES:
+  - AlienKit (from `../`)
+  - Nimble (= 3.0.0)
+  - Quick (~> 0.8.0)
+
+EXTERNAL SOURCES:
+  AlienKit:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  AlienKit: 9da56c80e00f0b7198324a0ba8210a99231421c5
+  Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
+  Quick: 563d0f6ec5f72e394645adb377708639b7dd38ab
+
+COCOAPODS: 0.39.0
