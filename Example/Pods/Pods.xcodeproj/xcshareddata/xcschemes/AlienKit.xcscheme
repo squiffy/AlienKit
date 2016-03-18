@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '04D6A3744B32F031DFC99437'
+               BlueprintIdentifier = '6EB9A6F2F05E7CB3881BAEAD'
                BlueprintName = 'AlienKit'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'AlienKit.framework'>

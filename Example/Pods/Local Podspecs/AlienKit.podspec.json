@@ -1,15 +1,15 @@
 {
   "name": "AlienKit",
   "version": "0.1.0",
-  "summary": "A short description of AlienKit.",
-  "description": "",
-  "homepage": "https://github.com/<GITHUB_USERNAME>/AlienKit",
+  "summary": "Swift API for Reddit",
+  "description": "Heres a swift API for reddit. The few API wrappers that\nexist did not satisfy my needs. This is here to remedy that.",
+  "homepage": "https://github.com/squiffy/AlienKit",
   "license": "MIT",
   "authors": {
-    "Squiffy": "squiffypwn@gmail.com"
+    "squiffy": "squiffypwn@gmail.com"
   },
   "source": {
-    "git": "https://github.com/<GITHUB_USERNAME>/AlienKit.git",
+    "git": "https://github.com/squiffy/AlienKit.git",
     "tag": "0.1.0"
   },
   "platforms": {
@@ -20,6 +20,14 @@
   "resource_bundles": {
     "AlienKit": [
       "Pod/Assets/*.png"
+    ]
+  },
+  "dependencies": {
+    "Alamofire": [
+      "~> 3.0"
+    ],
+    "SwiftyJSON": [
+      "~> 2.3"
     ]
   }
 }

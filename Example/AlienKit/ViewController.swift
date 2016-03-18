@@ -7,13 +7,28 @@
 //
 
 import UIKit
+import AlienKit
 
 class ViewController: UIViewController {
+    
+    var client :Client?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        self.client = Client(secret: "YwBLaxHJevLYPg", completion: { client, error in
+            if let _ = client {
+                print("we've logged in!")
+            } else {
+                if let error = error {
+                    print(error)
+                }
+            }
+        })
+        
+        print(client)
     }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -21,4 +36,3 @@ class ViewController: UIViewController {
     }
 
 }
-
