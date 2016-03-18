@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        self.client = Client(secret: "YwBLaxHJevLYPg", completion: { client, error in
+        self.client = Client(id: "YwBLaxHJevLYPg", completion: { client, error in
             if let _ = client {
                 print("we've logged in!")
             } else {

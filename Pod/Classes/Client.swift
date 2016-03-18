@@ -19,11 +19,11 @@ public final class Client {
     /**
      initializer for a "userless" session.
      
-     - Parameter secret: app secret from your app preferences page on [reddit](https://www.reddit.com/prefs/apps/)
+     - Parameter secret: app id from your app preferences page on [reddit](https://www.reddit.com/prefs/apps/)
      - Parameter completion: closure called when the authentication process is done.
      - Returns: a new optional client object
      */
-    public init?(secret: String, completion: (Client?, NSError?) -> Void) {
+    public init?(id: String, completion: (Client?, NSError?) -> Void) {
         
         // oauth time.
         
@@ -31,7 +31,7 @@ public final class Client {
         // use basic auth with username the secret and passwor blank
         // a ':' will need to be appended for basic auth to work correct
         
-        if let encodedSecret = "\(secret):".dataUsingEncoding(NSUTF8StringEncoding) {
+        if let encodedSecret = "\(id):".dataUsingEncoding(NSUTF8StringEncoding) {
             // generate UUID
             self.uuid = NSUUID()
             
