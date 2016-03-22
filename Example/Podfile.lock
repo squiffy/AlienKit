@@ -2,15 +2,15 @@ PODS:
   - Alamofire (3.2.1)
   - AlienKit (0.1.0):
     - Alamofire (~> 3.0)
+    - p2.OAuth2
     - SwiftyJSON (~> 2.3)
-  - Nimble (3.2.0)
-  - Quick (0.8.0)
+  - p2.OAuth2 (2.2.3):
+    - SwiftKeychain (~> 1.0)
+  - SwiftKeychain (1.0.0)
   - SwiftyJSON (2.3.2)
 
 DEPENDENCIES:
   - AlienKit (from `../`)
-  - Nimble (= 3.2.0)
-  - Quick (~> 0.8.0)
 
 EXTERNAL SOURCES:
   AlienKit:
@@ -18,9 +18,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: f11d8624a05f5d39e0c99309b3e600a3ba64298a
-  AlienKit: 461029ba36022cda550f80af5b1af7e4cbb03e67
-  Nimble: 703854335d181df169bbca9c97117b5cf8c47c1d
-  Quick: 563d0f6ec5f72e394645adb377708639b7dd38ab
+  AlienKit: 1b947193b9262c896998b32503fd847a583694f3
+  p2.OAuth2: 8b913d01969fa54cc5db4654420191fbf3f927ab
+  SwiftKeychain: fd9ad69f7b3ff7a0c7ba579da508bbaa89a395b2
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
 
 COCOAPODS: 0.39.0

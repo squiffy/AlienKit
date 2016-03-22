@@ -86,14 +86,14 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-AlienKit_Tests/Alamofire.framework"
   install_framework "Pods-AlienKit_Tests/AlienKit.framework"
+  install_framework "Pods-AlienKit_Tests/SwiftKeychain.framework"
   install_framework "Pods-AlienKit_Tests/SwiftyJSON.framework"
-  install_framework "Pods-AlienKit_Tests/Nimble.framework"
-  install_framework "Pods-AlienKit_Tests/Quick.framework"
+  install_framework "Pods-AlienKit_Tests/p2_OAuth2.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-AlienKit_Tests/Alamofire.framework"
   install_framework "Pods-AlienKit_Tests/AlienKit.framework"
+  install_framework "Pods-AlienKit_Tests/SwiftKeychain.framework"
   install_framework "Pods-AlienKit_Tests/SwiftyJSON.framework"
-  install_framework "Pods-AlienKit_Tests/Nimble.framework"
-  install_framework "Pods-AlienKit_Tests/Quick.framework"
+  install_framework "Pods-AlienKit_Tests/p2_OAuth2.framework"
 fi

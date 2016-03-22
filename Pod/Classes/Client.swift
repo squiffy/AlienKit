@@ -1,83 +1,111 @@
 //
 //  Client.swift
-//  AlienKit
+//  Pods
 //
-//  Created by Will Estes on 3/17/16.
-//  Copyright © 2016 CocoaPods. All rights reserved.
+//  Created by Will Estes on 3/20/16.
+//
 //
 
 import Foundation
 import Alamofire
 import SwiftyJSON
+import p2_OAuth2
 
-/// client class
-public final class Client {
+/// Protocol to implement different kinds of clients
+public protocol Client {
     
-    private var token :Token?
-    private let uuid :NSUUID
+    /// Generic type represnting an `OAuth2` flow.
+    associatedtype T: OAuth2
+    
+    /// tracks a session in a `Client` object.
+    var oauthSession :T { get }
+ 
+    func authenticate(success: (Void) -> Void, failure: (ErrorType?) -> Void)
     
     /**
-     initializer for a "userless" session.
+     function to handle authorized API requests
      
-     - Parameter secret: app id from your app preferences page on [reddit](https://www.reddit.com/prefs/apps/)
-     - Parameter completion: closure called when the authentication process is done.
-     - Returns: a new optional client object
+     - Parameter method: HTTP request type
+     - Parameter URLString: API endpoint to request
+     - Parameter parameters: HTTP parameters to send with the request
+     - Parameter encoding: method of encoding to encode `parameters`
+     - Parameter headers: HTTP headers to send with the request.
+     
+     - Returns: object representing the request
      */
-    public init?(id: String, completion: (Client?, NSError?) -> Void) {
+    func request(
+    method: Alamofire.Method,
+    _ URLString: URLStringConvertible,
+    parameters: [String: AnyObject]?,
+    encoding: Alamofire.ParameterEncoding,
+    headers: [String: String]?) -> Alamofire.Request
+    
+    // here comes the actual API stuff
+}
+
+extension Client {
+    
+    public func getPostsFrom(subreddit: String, after: Listing? = nil, success: (Listing) -> Void, failure: (Void) -> Void) {
         
-        // oauth time.
+        var params :[String:String]?
         
-        
-        // use basic auth with username the secret and passwor blank
-        // a ':' will need to be appended for basic auth to work correct
-        
-        if let encodedSecret = "\(id):".dataUsingEncoding(NSUTF8StringEncoding) {
-            // generate UUID
-            self.uuid = NSUUID()
-            
-            let base64creds = NSString(data:encodedSecret.base64EncodedDataWithOptions([]), encoding:  NSUTF8StringEncoding)!
-            let headers = ["Authorization" : "Basic \(base64creds)"]
-            let params = ["grant_type" : "https://oauth.reddit.com/grants/installed_client", "device_id" : self.uuid.UUIDString]
-            
-            // send off the request
-            Alamofire.request(.POST, "https://www.reddit.com/api/v1/access_token", parameters: params, encoding: .URL, headers: headers)
-                .responseJSON { response in
-                    switch response.result {
-                    case .Success:
-                        if let value = response.result.value {
-                            let tokenResponse = JSON(value)
-                            self.token = Token(accessToken: tokenResponse["access_token"].stringValue, tokenType: tokenResponse["token_type"].stringValue, scope: tokenResponse["scope"].stringValue, expiry: NSTimeInterval(tokenResponse["expires_in"].intValue))
-                            
-                            completion(self, nil)
-                        }
-                    case .Failure(let error):
-                        completion(nil, error)
-                    }
+        if let listing = after {
+            if let after = listing.after {
+                params = ["after" : after, "count" : String(listing.things.count)]
             }
-            
-            // temporarily set accessToken to nil since request is async
-            self.token = nil
-            return
         }
-        
-        // could not encode secret
-        return nil
-        
-        
+        self.request(.GET, "https://oauth.reddit.com/r/\(subreddit)", parameters: params).responseJSON(completionHandler: { response in
+            
+            if let jsonData = response.result.value {
+                let json = JSON(jsonData)
+                if let kind = json["kind"].string {
+                    if kind == "Listing" {
+                        if (json["data"].dictionary != nil) {
+                            return success(Parser.parseListFromJSON(json["data"]))
+                        }
+                    }
+                }
+                
+                failure()
+            }
+        })
     }
+    
+    // Code below has been adapted from https://github.com/p2/OAuth2
     
     /**
-     initializer for a authenticated session
+     function to handle authorized API requests
      
-     - Parameter username: reddit username
-     - Parameter password: reddit password
-     - Returns: a new client object
+     - Parameter method: HTTP request type
+     - Parameter URLString: API endpoint to request
+     - Parameter parameters: HTTP parameters to send with the request
+     - Parameter encoding: method of encoding to encode `parameters`
+     - Parameter headers: HTTP headers to send with the request.
+     
+     - Returns: object representing the request
      */
-    public init?(username: String, password: String) {
+    public func request(
+        method: Alamofire.Method,
+        _ URLString: URLStringConvertible,
+          parameters: [String: AnyObject]? = nil,
+          encoding: Alamofire.ParameterEncoding = .URL,
+          headers: [String: String]? = nil) -> Alamofire.Request
+    {
         
-        self.token = nil
-        self.uuid = NSUUID()
         
+        var hdrs = headers ?? [:]
+        
+        // attempt to renew token if expired
+        //oauthSession.authorize()
+        
+        if let token = oauthSession.clientConfig.accessToken {
+            hdrs["Authorization"] = "Bearer \(token)"
+        }
+        return Alamofire.request(
+            method,
+            URLString,
+            parameters: parameters,
+            encoding: encoding,
+            headers: hdrs)
     }
-    
 }

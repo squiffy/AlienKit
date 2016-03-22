@@ -26,7 +26,7 @@ Pod::Spec.new do |s|
   s.license          = 'MIT'
   s.author           = { "squiffy" => "squiffypwn@gmail.com" }
   s.source           = { :git => "https://github.com/squiffy/AlienKit.git", :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.social_media_url = 'https://twitter.com/squiffy'
 
   s.platform     = :ios, '8.0'
   s.requires_arc = true
@@ -38,6 +38,7 @@ Pod::Spec.new do |s|
 
   s.dependency 'Alamofire', '~> 3.0'
   s.dependency 'SwiftyJSON', '~> 2.3'
+  s.dependency 'p2.OAuth2'
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'

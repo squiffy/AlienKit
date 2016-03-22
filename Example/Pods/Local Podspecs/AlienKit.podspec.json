@@ -12,6 +12,7 @@
     "git": "https://github.com/squiffy/AlienKit.git",
     "tag": "0.1.0"
   },
+  "social_media_url": "https://twitter.com/squiffy",
   "platforms": {
     "ios": "8.0"
   },
@@ -28,6 +29,9 @@
     ],
     "SwiftyJSON": [
       "~> 2.3"
+    ],
+    "p2.OAuth2": [
+
     ]
   }
 }

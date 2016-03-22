@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import p2_OAuth2
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
