@@ -44,7 +44,17 @@ public protocol Client {
 }
 
 extension Client {
-    
+    /**
+     function to handle authorized API requests
+     
+     - Parameter subreddit: HTTP request type
+     - Parameter URLString: API endpoint to request
+     - Parameter parameters: HTTP parameters to send with the request
+     - Parameter encoding: method of encoding to encode `parameters`
+     - Parameter headers: HTTP headers to send with the request.
+     
+     - Returns: object representing the request
+     */
     public func getPostsFrom(subreddit: String, after: Listing? = nil, success: (Listing) -> Void, failure: (Void) -> Void) {
         
         var params :[String:String]?
