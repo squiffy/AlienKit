@@ -38,7 +38,7 @@ Pod::Spec.new do |s|
 
   s.dependency 'Alamofire', '~> 3.0'
   s.dependency 'SwiftyJSON', '~> 2.3'
-  s.dependency 'p2.OAuth2'
+  s.dependency 'p2.OAuth2', '~> 2.2.3'
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
