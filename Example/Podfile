@@ -6,8 +6,6 @@ target 'AlienKit_Example', :exclusive => true do
 end
 
 target 'AlienKit_Tests', :exclusive => true do
-  # Hack until changes in master branch gets tagged
-
   pod 'AlienKit', :path => '../'
 
 end

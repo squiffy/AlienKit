@@ -9,6 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-public class PromoCampaign : Thing {
+/// class representing a Reddit `PromoCampaign` object
+public class PromoCampaign: Thing {
 
 }

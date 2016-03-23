@@ -9,7 +9,8 @@
 import Foundation
 import SwiftyJSON
 
-public class Account : Thing {
+/// `Account` object defined by Reddit.
+public class Account: Thing {
     public let created: Int?
     public let createdUTC: Int?
     
@@ -24,6 +25,13 @@ public class Account : Thing {
     public let modhash: String?
     public let over18: Bool?
     
+    /**
+     initialize an `Account` object
+     
+     - parameter data: JSON data from the API endpoint
+     
+     - returns: an `Account` object.
+     */
     init(data: JSON) {
         if let created = data["created"].float {
             self.created = Int(created)

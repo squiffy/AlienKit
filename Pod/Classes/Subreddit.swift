@@ -9,5 +9,6 @@
 import Foundation
 import SwiftyJSON
 
-public class Subreddit : Thing {
+/// class representing a Reddit `Subreddit` object
+public class Subreddit: Thing {
 }

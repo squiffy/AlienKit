@@ -9,6 +9,6 @@
 import Foundation
 import SwiftyJSON
 
-public class Award : Thing {
+public class Award: Thing {
 
 }

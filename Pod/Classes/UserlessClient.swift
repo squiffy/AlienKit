@@ -16,6 +16,7 @@ public final class UserlessClient : Client {
     
     public typealias T = OAuth2ClientCredentialsReddit
     
+    /// OAuth session object
     public var oauthSession :OAuth2ClientCredentialsReddit
     
     /**

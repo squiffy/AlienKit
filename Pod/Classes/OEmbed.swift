@@ -26,6 +26,13 @@ public class OEmbed {
     public let thumbnailHeight: Int?
     public let authorURL: String?
     
+    /**
+     initialize an `OEmbed` object
+     
+     - parameter data: JSON data from the API endpoint
+     
+     - returns: a `OEmbed` object.
+     */
     init(data: JSON) {
         self.providerUrl = data["provider_url"].string
         self.description = data["description"].string
