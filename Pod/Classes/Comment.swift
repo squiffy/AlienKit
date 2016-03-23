@@ -163,6 +163,8 @@ public class Comment: Thing {
         
         self.gilded = data["gilded"].int!
         self.likes = data["likes"].bool
+        self.ups = data["ups"].int
+        self.downs = data["downs"].int
         self.linkAuthor = data["link_author"].string
         self.linkID = data["link_id"].string
         self.linkTitle = data["link_title"].string

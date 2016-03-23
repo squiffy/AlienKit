@@ -5,8 +5,8 @@
 [![License](https://img.shields.io/cocoapods/l/AlienKit.svg?style=flat)](http://cocoapods.org/pods/AlienKit)
 [![Platform](https://img.shields.io/cocoapods/p/AlienKit.svg?style=flat)](http://cocoapods.org/pods/AlienKit)
 
-Please note that this is still in development. Thing has unit tests yet and 
-some documentation is missing.
+Please note that this is still in development. Many, many endpoints are not implemented yet.
+This library has no unit tests yet and some documentation is missing.
     
 ## Usage
 
