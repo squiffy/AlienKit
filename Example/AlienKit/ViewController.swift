@@ -20,33 +20,35 @@ class ViewController: UIViewController {
         self.client = UserlessClient(id: "YwBLaxHJevLYPg")
         
         client!.authenticate({
-            self.client!.getPostsFrom("all", success: { listing in
+            self.client!.getPostsFrom("drugs", success: { listing in
+                
                 for thing in listing.things {
                     
                     if let thing = thing as? Link {
-                        print(thing.permalink)
+                        // now get comments
+                        self.client!.getCommentsFor(thing, success: { listing in
+                            
+                            for thing in listing.things {
+                                
+                                if let thing = thing as? Comment {
+                                    print(thing.body)
+                                }
+                            }
+                            
+                            }, failure: {
+                                
+                                print("could not get comments")
+                        })
+                        
                     }
-
+                    
                 }
                 
-                print("===================================")
-                self.client!.getPostsFrom("all", after: listing, success: { listing in
+                }, failure: {
                     
-                    for thing in listing.things {
-                        
-                        if let thing = thing as? Link {
-                            print(thing.permalink)
-                        }
-                        
-                    }
+                    print("could not get posts.")
                     
-                    }, failure:  {
-                        print("something went wrong")
                 })
-                
-                }, failure:  {
-                    print("something went wrong")
-            })
             
             }, failure: { _ in
                 

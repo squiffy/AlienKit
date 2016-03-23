@@ -78,6 +78,39 @@ extension Client {
         })
     }
     
+    /**
+     Gets the comment tree for a `Link` post
+     
+     - parameter link:    `link` to get comments fo
+     - parameter success: closure called when the request is sucessful
+     - parameter failure: losure called when the request failed.
+     */
+    public func getCommentsFor(link: Link, success: (Listing) -> Void, failure: (Void) -> Void) {
+        
+        let subreddit = link.subreddit!
+        let url = "https://oauth.reddit.com/r/\(subreddit)/comments/\(link.id!)"
+        
+        self.request(.GET, url).responseJSON(completionHandler: { response in
+            
+            // so this request has an array in the root. index 0 = link listing. index 1 = comment tree.
+            
+            if let jsonData = response.result.value {
+                let json = JSON(jsonData)
+                if let json = json.array?[1] {
+                    if let kind = json["kind"].string {
+                        if kind == "Listing" {
+                            if json["data"].dictionary != nil {
+                                return success(Parser.parseListFromJSON(json["data"]))
+                            }
+                        }
+                    }
+                }
+            }
+            
+        })
+        
+    }
+    
     // Code below has been adapted from https://github.com/p2/OAuth2
     
     /**
@@ -98,7 +131,6 @@ extension Client {
           encoding: Alamofire.ParameterEncoding = .URL,
           headers: [String: String]? = nil) -> Alamofire.Request
     {
-        
         
         var hdrs = headers ?? [:]
         
