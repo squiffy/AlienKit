@@ -1,0 +1,2 @@
+xcodebuild_arguments: ['-workspace', 'Example/AlienKit.xcworkspace', '-scheme', 'AlienKit']
+swift_version: 2.2
