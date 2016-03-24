@@ -99,10 +99,14 @@ extension Client {
      - parameter success: closure called when the request is sucessful
      - parameter failure: losure called when the request failed.
      */
-    public func getCommentsFor(link: Link, success: (Listing) -> Void, failure: (Void) -> Void) {
+    public func getCommentsFor(link: Link, sort: CommentSortType? = nil, success: (Listing) -> Void, failure: (Void) -> Void) {
         
         let subreddit = link.subreddit!
-        let url = "https://oauth.reddit.com/r/\(subreddit)/comments/\(link.id!)"
+        var url = "https://oauth.reddit.com/r/\(subreddit)/comments/\(link.id!)"
+        
+        if let sort = sort {
+            url = url + "/?sort=\(sort.rawValue)"
+        }
         
         self.request(.GET, url).responseJSON(completionHandler: { response in
             

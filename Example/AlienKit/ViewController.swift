@@ -22,10 +22,16 @@ class ViewController: UIViewController {
         client!.authenticate({
             self.client!.getPostsFrom("apple", sortFilter: (.Controversial, .Week), success: { listing in
                 
-                for thing in listing.things {
-                    if let thing = thing as? Link {
-                        print(thing.title!)
-                    }
+                if let thing = listing.things[0] as? Link {
+                    self.client!.getCommentsFor(thing, sort: .Top, success: { listing in
+                        
+                        if let thing = listing.things[0] as? Comment {
+                            print(thing.body!)
+                        }
+                        
+                        }, failure: {
+                            
+                    })
                 }
                 
                 }, failure: {
