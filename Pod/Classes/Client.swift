@@ -41,18 +41,21 @@ public protocol Client {
     headers: [String: String]?) -> Alamofire.Request
     
     // here comes the actual API stuff
+    func getPostsFrom(subreddit: String, after: Listing?, sortFilter: (sort: PostSortType, filter: TimeFilter?)?, success: ((Listing) -> Void)?, failure: ((Void) -> Void)?)
+    func getCommentsFor(link: Link, sort: CommentSortType?, success: ((Listing) -> Void)?, failure: ((Void) -> Void)?)
 }
 
 extension Client {
     /**
      fetch posts from a subreddit
      
-     - parameter subreddit: the name or the subreddit to get posts from
-     - parameter after:     `Listing` that you want to get posts after.
-     - parameter success:   closure called when the request is sucessful
-     - parameter failure:   closure called when the request failed.
+     - parameter subreddit:  the name or the subreddit to get posts from
+     - parameter after:      `Listing` that you want to get posts after.
+     - parameter sortFilter: Optional Tuple to customize a sort.
+     - parameter success:    closure called when the request is sucessful
+     - parameter failure:    closure called when the request failed.
      */
-    public func getPostsFrom(subreddit: String, after: Listing? = nil, sortFilter: (sort: SortType, filter: TimeFilter?)?, success: (Listing) -> Void, failure: (Void) -> Void) {
+    public func getPostsFrom(subreddit: String, after: Listing? = nil, sortFilter: (sort: PostSortType, filter: TimeFilter?)?, success: ((Listing) -> Void)? = nil, failure: ((Void) -> Void)? = nil) {
         
         var params = [String:String]()
         
@@ -82,12 +85,13 @@ extension Client {
                 if let kind = json["kind"].string {
                     if kind == "Listing" {
                         if (json["data"].dictionary != nil) {
-                            return success(Parser.parseListFromJSON(json["data"]))
+                            success?(Parser.parseListFromJSON(json["data"]))
+                            return
                         }
                     }
                 }
                 
-                failure()
+                failure?()
             }
         })
     }
@@ -97,9 +101,10 @@ extension Client {
      
      - parameter link:    `link` to get comments fo
      - parameter success: closure called when the request is sucessful
-     - parameter failure: losure called when the request failed.
+     - parameter sort:    optional sort functionality
+     - parameter failure: closure called when the request failed.
      */
-    public func getCommentsFor(link: Link, sort: CommentSortType? = nil, success: (Listing) -> Void, failure: (Void) -> Void) {
+    public func getCommentsFor(link: Link, sort: CommentSortType? = nil, success: ((Listing) -> Void)?, failure: ((Void) -> Void)?) {
         
         let subreddit = link.subreddit!
         var url = "https://oauth.reddit.com/r/\(subreddit)/comments/\(link.id!)"
@@ -118,12 +123,14 @@ extension Client {
                     if let kind = json["kind"].string {
                         if kind == "Listing" {
                             if json["data"].dictionary != nil {
-                                return success(Parser.parseListFromJSON(json["data"]))
+                                success?(Parser.parseListFromJSON(json["data"]))
                             }
                         }
                     }
                 }
             }
+            
+            failure?()
             
         })
         

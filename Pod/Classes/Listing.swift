@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum SortType: String {
+public enum PostSortType: String {
     
     case Hot = "hot"
     case Top = "top"
