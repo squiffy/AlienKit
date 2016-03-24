@@ -8,6 +8,26 @@
 
 import Foundation
 
+public enum SortType: String {
+    
+    case Hot = "hot"
+    case Top = "top"
+    case New = "new"
+    case Controversial = "controversial"
+    
+}
+
+public enum TimeFilter: String {
+    
+    case Hour = "hour"
+    case Day = "day"
+    case Week = "week"
+    case Month = "month"
+    case Year = "year"
+    case All = "all"
+    
+}
+
 public class Listing {
     
     /// The fullname of the listing that follows before this page. `null` if there is no previous page.

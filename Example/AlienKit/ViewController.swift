@@ -20,28 +20,12 @@ class ViewController: UIViewController {
         self.client = UserlessClient(id: "YwBLaxHJevLYPg")
         
         client!.authenticate({
-            self.client!.getPostsFrom("drugs", success: { listing in
+            self.client!.getPostsFrom("apple", sortFilter: (.Controversial, .Week), success: { listing in
                 
                 for thing in listing.things {
-                    
                     if let thing = thing as? Link {
-                        // now get comments
-                        self.client!.getCommentsFor(thing, success: { listing in
-                            
-                            for thing in listing.things {
-                                
-                                if let thing = thing as? Comment {
-                                    print(thing.body)
-                                }
-                            }
-                            
-                            }, failure: {
-                                
-                                print("could not get comments")
-                        })
-                        
+                        print(thing.title!)
                     }
-                    
                 }
                 
                 }, failure: {

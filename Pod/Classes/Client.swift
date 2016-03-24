@@ -52,16 +52,30 @@ extension Client {
      - parameter success:   closure called when the request is sucessful
      - parameter failure:   closure called when the request failed.
      */
-    public func getPostsFrom(subreddit: String, after: Listing? = nil, success: (Listing) -> Void, failure: (Void) -> Void) {
+    public func getPostsFrom(subreddit: String, after: Listing? = nil, sortFilter: (sort: SortType, filter: TimeFilter?)?, success: (Listing) -> Void, failure: (Void) -> Void) {
         
-        var params :[String:String]?
+        var params = [String:String]()
+        
+        var url = "https://oauth.reddit.com/r/\(subreddit)"
+        
+        if let sortFilter = sortFilter {
+            url = url + "/\(sortFilter.sort.rawValue)"
+            
+            // option to have a time filter too
+            if let timeFilter = sortFilter.filter {
+                url = url + "?t=\(timeFilter.rawValue)"
+            }
+        }
         
         if let listing = after {
             if let after = listing.after {
-                params = ["after" : after, "count" : String(listing.things.count)]
+                params["after"] = after
+                params["count"] = String(listing.things.count)
             }
         }
-        self.request(.GET, "https://oauth.reddit.com/r/\(subreddit)", parameters: params).responseJSON(completionHandler: { response in
+        
+        
+        self.request(.GET, url, parameters: params).responseJSON(completionHandler: { response in
             
             if let jsonData = response.result.value {
                 let json = JSON(jsonData)
