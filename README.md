@@ -1,6 +1,6 @@
 # AlienKit
 
-[![CI Status](https://travis-ci.org/squiffy/AlienKit.svg)](https://travis-ci.org/Squiffy/AlienKit)
+[![CI Status](https://travis-ci.org/squiffy/AlienKit.svg?branch=develop)](https://travis-ci.org/squiffy/AlienKit)
 [![Version](https://img.shields.io/cocoapods/v/AlienKit.svg?style=flat)](http://cocoapods.org/pods/AlienKit)
 [![License](https://img.shields.io/cocoapods/l/AlienKit.svg?style=flat)](http://cocoapods.org/pods/AlienKit)
 [![Platform](https://img.shields.io/cocoapods/p/AlienKit.svg?style=flat)](http://cocoapods.org/pods/AlienKit)
