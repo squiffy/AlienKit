@@ -20,7 +20,7 @@ public protocol Client {
     /// tracks a session in a `Client` object.
     var oauthSession :T { get }
  
-    func authenticate(success: (Void) -> Void, failure: (ErrorType?) -> Void)
+    func authorize(success: (Void) -> Void, failure: (ErrorType?) -> Void)
     
     /**
      function to handle authorized API requests
@@ -41,41 +41,99 @@ public protocol Client {
     headers: [String: String]?) -> Alamofire.Request
     
     // here comes the actual API stuff
+    func getPostsFrom(subreddit: String, after: Listing?, sortFilter: (sort: PostSortType, filter: TimeFilter?)?, success: ((Listing) -> Void)?, failure: ((Void) -> Void)?)
+    func getCommentsFor(link: Link, sort: CommentSortType?, success: ((Listing) -> Void)?, failure: ((Void) -> Void)?)
 }
 
 extension Client {
     /**
      fetch posts from a subreddit
      
-     - parameter subreddit: the name or the subreddit to get posts from
-     - parameter after:     `Listing` that you want to get posts after.
-     - parameter success:   closure called when the request is sucessful
-     - parameter failure:   closure called when the request failed.
+     - parameter subreddit:  the name or the subreddit to get posts from
+     - parameter after:      `Listing` that you want to get posts after.
+     - parameter sortFilter: Optional Tuple to customize a sort.
+     - parameter success:    closure called when the request is sucessful
+     - parameter failure:    closure called when the request failed.
      */
-    public func getPostsFrom(subreddit: String, after: Listing? = nil, success: (Listing) -> Void, failure: (Void) -> Void) {
+    public func getPostsFrom(subreddit: String, after: Listing? = nil, sortFilter: (sort: PostSortType, filter: TimeFilter?)? = nil, success: ((Listing) -> Void)? = nil, failure: ((Void) -> Void)? = nil) {
         
-        var params :[String:String]?
+        var params = [String:String]()
+        
+        var url = "https://oauth.reddit.com/r/\(subreddit)"
+        
+        if let sortFilter = sortFilter {
+            url = url + "/\(sortFilter.sort.rawValue)"
+            
+            // option to have a time filter too
+            if let timeFilter = sortFilter.filter {
+                url = url + "?t=\(timeFilter.rawValue)"
+            }
+        }
         
         if let listing = after {
             if let after = listing.after {
-                params = ["after" : after, "count" : String(listing.things.count)]
+                params["after"] = after
+                params["count"] = String(listing.things.count)
             }
         }
-        self.request(.GET, "https://oauth.reddit.com/r/\(subreddit)", parameters: params).responseJSON(completionHandler: { response in
+        
+        
+        self.request(.GET, url, parameters: params).responseJSON(completionHandler: { response in
             
             if let jsonData = response.result.value {
                 let json = JSON(jsonData)
                 if let kind = json["kind"].string {
                     if kind == "Listing" {
                         if (json["data"].dictionary != nil) {
-                            return success(Parser.parseListFromJSON(json["data"]))
+                            success?(Parser.parseListFromJSON(json["data"]))
+                            return
                         }
                     }
                 }
                 
-                failure()
+                failure?()
             }
         })
+    }
+    
+    /**
+     Gets the comment tree for a `Link` post
+     
+     - parameter link:    `link` to get comments fo
+     - parameter success: closure called when the request is sucessful
+     - parameter sort:    optional sort functionality
+     - parameter failure: closure called when the request failed.
+     */
+    public func getCommentsFor(link: Link, sort: CommentSortType? = nil, success: ((Listing) -> Void)?, failure: ((Void) -> Void)?) {
+        
+        let subreddit = link.subreddit!
+        var url = "https://oauth.reddit.com/r/\(subreddit)/comments/\(link.id!)"
+        
+        if let sort = sort {
+            url = url + "/?sort=\(sort.rawValue)"
+        }
+        
+        self.request(.GET, url).responseJSON(completionHandler: { response in
+            
+            // so this request has an array in the root. index 0 = link listing. index 1 = comment tree.
+            
+            if let jsonData = response.result.value {
+                let json = JSON(jsonData)
+                if let json = json.array?[1] {
+                    if let kind = json["kind"].string {
+                        if kind == "Listing" {
+                            if json["data"].dictionary != nil {
+                                success?(Parser.parseListFromJSON(json["data"]))
+                            }
+                        }
+                    }
+                }
+            }
+            
+            failure?()
+            
+        })
+        
     }
     
     // Code below has been adapted from https://github.com/p2/OAuth2
@@ -98,7 +156,6 @@ extension Client {
           encoding: Alamofire.ParameterEncoding = .URL,
           headers: [String: String]? = nil) -> Alamofire.Request
     {
-        
         
         var hdrs = headers ?? [:]
         

@@ -172,8 +172,13 @@ public class Comment: Thing {
         self.numReports = data["num_reports"].int
         self.parentId = data["parentId"].string
         
-        if data["replies"].dictionary != nil {
-            self.replies = Parser.parseListFromJSON(data["replies"])
+        if let replies = data["replies"].dictionary {
+            
+            if let data = replies["data"] {
+                self.replies = Parser.parseListFromJSON(data)
+            } else {
+                self.replies = nil
+            }
         } else {
             self.replies = nil
         }

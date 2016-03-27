@@ -18,35 +18,38 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
         self.client = UserlessClient(id: "YwBLaxHJevLYPg")
-        
-        client!.authenticate({
-            self.client!.getPostsFrom("all", success: { listing in
-                for thing in listing.things {
-                    
-                    if let thing = thing as? Link {
-                        print(thing.permalink)
-                    }
 
+        client!.authorize({
+            
+            self.client!.getPostsFrom("apple", success: { listing in
+                
+                for thing in listing.things {
+                    if let link = thing as? Link {
+                        print(link.title)
+                    }
                 }
                 
-                print("===================================")
-                self.client!.getPostsFrom("all", after: listing, success: { listing in
-                    
-                    for thing in listing.things {
+                if let thing = listing.things[0] as? Link {
+                    self.client!.getCommentsFor(thing, sort: .Top, success: { listing in
                         
-                        if let thing = thing as? Link {
-                            print(thing.permalink)
+                        if let thing = listing.things[0] as? Comment {
+                            print(thing.body!)
+                            
+                            if let subThing = thing.replies?.things[0] as? Comment {
+                                print(subThing.body!)
+                            }
                         }
                         
-                    }
-                    
-                    }, failure:  {
-                        print("something went wrong")
-                })
+                        }, failure: {
+                            
+                    })
+                }
                 
-                }, failure:  {
-                    print("something went wrong")
-            })
+                }, failure: {
+                    
+                    print("could not get posts.")
+                    
+                })
             
             }, failure: { _ in
                 
