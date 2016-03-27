@@ -18,9 +18,16 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
         self.client = UserlessClient(id: "YwBLaxHJevLYPg")
-        
-        client!.authenticate({
-            self.client!.getPostsFrom("apple", sortFilter: (.Top, .All), success: { listing in
+
+        client!.authorize({
+            
+            self.client!.getPostsFrom("apple", success: { listing in
+                
+                for thing in listing.things {
+                    if let link = thing as? Link {
+                        print(link.title)
+                    }
+                }
                 
                 if let thing = listing.things[0] as? Link {
                     self.client!.getCommentsFor(thing, sort: .Top, success: { listing in

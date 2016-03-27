@@ -24,7 +24,7 @@ public final class UserlessClient : Client {
          - Parameter success: closure called when authorized with reddit
          - Parameter failure: closure called when authorization with reddit failed
     */
-    public func authenticate(success: (Void) -> Void, failure: (ErrorType?) -> Void) {
+    public func authorize(success: (Void) -> Void, failure: (ErrorType?) -> Void) {
     
         oauthSession.onAuthorize = { parameters in
             success()

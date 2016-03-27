@@ -20,7 +20,7 @@ public protocol Client {
     /// tracks a session in a `Client` object.
     var oauthSession :T { get }
  
-    func authenticate(success: (Void) -> Void, failure: (ErrorType?) -> Void)
+    func authorize(success: (Void) -> Void, failure: (ErrorType?) -> Void)
     
     /**
      function to handle authorized API requests
@@ -55,7 +55,7 @@ extension Client {
      - parameter success:    closure called when the request is sucessful
      - parameter failure:    closure called when the request failed.
      */
-    public func getPostsFrom(subreddit: String, after: Listing? = nil, sortFilter: (sort: PostSortType, filter: TimeFilter?)?, success: ((Listing) -> Void)? = nil, failure: ((Void) -> Void)? = nil) {
+    public func getPostsFrom(subreddit: String, after: Listing? = nil, sortFilter: (sort: PostSortType, filter: TimeFilter?)? = nil, success: ((Listing) -> Void)? = nil, failure: ((Void) -> Void)? = nil) {
         
         var params = [String:String]()
         
