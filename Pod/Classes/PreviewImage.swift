@@ -39,10 +39,10 @@ public class Image {
 public class PreviewImage {
     
     /// source resolution of the image.
-    let source: Image?
+    public let source: Image?
     
     /// array of various resolutions of the original source image.
-    let resoulutions: [Image]?
+    public let resoulutions: [Image]?
     
     /**
      initialize a `PreviewImage` object
